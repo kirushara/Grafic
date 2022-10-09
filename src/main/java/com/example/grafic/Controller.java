@@ -72,7 +72,7 @@ public class Controller {
         assert startX != null : "fx:id=\"startX\" was not injected: check your FXML file 'graph.fxml'.";
         assert startY != null : "fx:id=\"startY\" was not injected: check your FXML file 'graph.fxml'.";
         drawButton.setOnAction(actionEvent -> {
-            outputGraph.getChildren().clear();
+            //outputGraph.getChildren().clear();
             bgFill();
         });
         clearButton.setOnAction(actionEvent -> {
