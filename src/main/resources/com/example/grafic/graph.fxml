@@ -52,11 +52,6 @@
                   <Font name="Arial Bold" size="19.0" />
                </font>
             </Button>
-            <Text fx:id="ef1" fill="RED" layoutX="243.0" layoutY="218.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="ef" text="empty field" textAlignment="CENTER" wrappingWidth="92.13671875">
-               <font>
-                  <Font name="Arial Bold" size="16.0" />
-               </font>
-            </Text>
             <Text fx:id="ef2" fill="RED" layoutX="243.0" layoutY="253.0" strokeType="OUTSIDE" strokeWidth="0.0" styleClass="ef" text="empty field" textAlignment="CENTER" wrappingWidth="92.13671875">
                <font>
                   <Font name="Arial Bold" size="16.0" />
