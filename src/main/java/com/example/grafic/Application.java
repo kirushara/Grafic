@@ -12,7 +12,7 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(Application.class.getResource("graph.fxml"));
         Scene scene = new Scene(fxmlLoader.load(), 1200, 840);
         //stage.setResizable(false);
-        stage.setTitle("Function Graph Draw");
+        stage.setTitle("Functions Graphs");
         stage.setScene(scene);
         stage.show();
     }
