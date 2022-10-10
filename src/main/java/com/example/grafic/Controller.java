@@ -196,7 +196,4 @@ public class Controller {
         if(s=="") return true;
         else return false;
     }
-    @FXML
-    int strToInt(String s){
-        return Integer.parseInt(s.trim());
     }*/
