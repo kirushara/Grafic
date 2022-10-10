@@ -34,49 +34,25 @@ public class Controller {
     @FXML // fx:id="clearButton"
     private Button clearButton; // Value injected by FXMLLoader
 
-    @FXML // fx:id="endX"
-    private TextField endX; // Value injected by FXMLLoader
-
-    @FXML // fx:id="endY"
-    private TextField endY; // Value injected by FXMLLoader
-
     @FXML // fx:id="outputGraph"
     private Pane outputGraph; // Value injected by FXMLLoader
 
-    @FXML // fx:id="startX"
-    private TextField startX; // Value injected by FXMLLoader
-
-    @FXML // fx:id="startY"
-    private TextField startY; // Value injected by FXMLLoader
-
-    @FXML // fx:id="ef1"
-    private Text ef1; // Value injected by FXMLLoader
-
-    @FXML // fx:id="ef2"
-    private Text ef2; // Value injected by FXMLLoader
-
-    @FXML // fx:id="ef3"
-    private Text ef3; // Value injected by FXMLLoader
-
-    @FXML // fx:id="ef4"
-    private Text ef4; // Value injected by FXMLLoader
+    final short dS = 41; //division size
 
     @FXML
         // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
         assert drawButton != null : "fx:id=\"drawButton\" was not injected: check your FXML file 'graph.fxml'.";
         assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'graph.fxml'.";
-        assert endX != null : "fx:id=\"endX\" was not injected: check your FXML file 'graph.fxml'.";
-        assert endY != null : "fx:id=\"endY\" was not injected: check your FXML file 'graph.fxml'.";
         assert outputGraph != null : "fx:id=\"outputGraph\" was not injected: check your FXML file 'graph.fxml'.";
-        assert startX != null : "fx:id=\"startX\" was not injected: check your FXML file 'graph.fxml'.";
-        assert startY != null : "fx:id=\"startY\" was not injected: check your FXML file 'graph.fxml'.";
         drawButton.setOnAction(actionEvent -> {
             outputGraph.getChildren().clear();
             bgFill();
+            drawFunction();
         });
         clearButton.setOnAction(actionEvent -> {
             outputGraph.getChildren().clear();
+            bgFill();
         });
     }
 
@@ -84,34 +60,33 @@ public class Controller {
     void bgFill() {
         float gWidth = (float) outputGraph.getWidth();
         float gHeight = (float) outputGraph.getHeight();
-
         //lines
         Line line;
         Circle circle;
         for (int i = 1; i <= 19; i++) {
-            line = new Line(0, i * 41, gWidth, i * 41);
+            line = new Line(0, i * dS, gWidth, i * dS);
             line.setStroke(Color.LIGHTGRAY);
             outputGraph.getChildren().add(line);
 
-            line = new Line(i * 41, 0, i * 41, gHeight);
+            line = new Line(i * dS, 0, i * dS, gHeight);
             line.setStroke(Color.LIGHTGRAY);
             outputGraph.getChildren().add(line);
 
-            circle=new Circle(gWidth/2, i*41, 2);
+            circle=new Circle(gWidth/2, i*dS, 2);
             circle.setFill(Color.BLACK);
             outputGraph.getChildren().add(circle);
 
-            circle=new Circle(i*41, gHeight/2, 2);
+            circle=new Circle(i*dS, gHeight/2, 2);
             circle.setFill(Color.BLACK);
             outputGraph.getChildren().add(circle);
         }
         //Ox
-        line = new Line(1, gHeight / 2, gWidth - 1, gHeight / 2);
+        line = new Line(0, gHeight / 2, gWidth, gHeight / 2);
         line.setStroke(Color.BLACK);
         line.setStrokeWidth(2);
         outputGraph.getChildren().add(line);
         //Oy
-        line = new Line(gWidth / 2, 1, gWidth / 2, gHeight - 1);
+        line = new Line(gWidth / 2, 0, gWidth / 2, gHeight);
         line.setStroke(Color.BLACK);
         line.setStrokeWidth(2);
         outputGraph.getChildren().add(line);
@@ -119,26 +94,65 @@ public class Controller {
         Label lbl;
         short c=-9;
         for (int i = 1; i <= 19; i++) {
-            lbl = new Label(String.valueOf(c));
+            lbl = new Label(String.valueOf(-c));
             lbl.setLayoutX(gWidth/2+2);
-            lbl.setLayoutY(i*41);
+            lbl.setLayoutY(i*dS);
             outputGraph.getChildren().add(lbl);
 
             lbl = new Label(String.valueOf(c));
-            lbl.setLayoutX(i*41);
+            lbl.setLayoutX(i*dS);
             lbl.setLayoutY(gHeight/2+2);
             if(c!=0) outputGraph.getChildren().add(lbl);
             c++;
         }
     }
+
     @FXML
     void drawFunction(){
-
+        float gWidth = (float) outputGraph.getWidth();
+        float gHeight = (float) outputGraph.getHeight();
+        System.out.print(gHeight);
+        Line line;
+        for(float x=-gWidth/2;x<gWidth/2;x++){
+            line = new Line(
+                    x + gWidth/2,
+                    -f(x) + gHeight/2,
+                    x+1 +gWidth/2,
+                    -f(x+1)+ gHeight/2
+            );
+            line.setStroke(Color.GREEN);
+            line.setStrokeWidth(2);
+            outputGraph.getChildren().add(line);
+        }
     }
-    double y(double x){
-        return x*x;
+    double f(double x){
+        short c=dS; //one division on ox, oy
+        return x*x/41;
     }
 }
+
+
+/*
+interface Operation{
+        double execute(double... nums);
+    }
+ */
+/*
+ float gWidth = (float) outputGraph.getWidth();
+        float gHeight = (float) outputGraph.getHeight();
+        Operation operation = x -> x[0]*x[0]/3;
+
+        for(int i = 0; i < gWidth; i++) {
+            outputGraph.getChildren().add(
+                    new Line(
+                            i + gWidth/2,
+                            -operation.execute(i) + gHeight/2,
+                            i+1 +gWidth/2,
+                            -operation.execute(i+1)+ gHeight/2
+                    )
+            );
+        }
+ */
 /*boolean check = true;
         int sX = 0, sY=0, eX=0, eY=0;
 
