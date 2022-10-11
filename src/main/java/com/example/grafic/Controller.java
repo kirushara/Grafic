@@ -54,6 +54,7 @@ public class Controller {
         assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'graph.fxml'.";
         assert exitButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'graph.fxml'.";
         assert outputGraph != null : "fx:id=\"outputGraph\" was not injected: check your FXML file 'graph.fxml'.";
+
         drawButton.setOnAction(actionEvent -> {
             outputGraph.getChildren().clear();
             bgFill();
@@ -150,8 +151,8 @@ public class Controller {
     }
 
     double f(double x, String s, double f){
-        int num; double incr = 0; int c; char buff; char[]array;
-        while (!arrCheck(s)) {
+        int num; double incr; int c; char buff; char[]array;
+        while (!s.matches("[$]+")) {
             if (s.contains("x^")) {
                 c = s.indexOf("^") + 1;
                 buff = s.charAt(c);
@@ -171,15 +172,9 @@ public class Controller {
                 s = new String(array);
                 f(x, s, f);
             }
+            System.out.println(1);
         }
         return f;
-    }
-    boolean arrCheck(String s) {
-        char[] c = s.toCharArray();
-        int l = s.length();
-        for (int i = 0; i < l; i++)
-            if (c[i] != '$') return false;
-        return true;
     }
     void emptyField(boolean b){
         if(!b) {
