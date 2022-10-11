@@ -12,8 +12,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
 import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.Effect;
-import javafx.scene.effect.Glow;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
@@ -137,52 +135,64 @@ public class Controller {
         for(float x=-gWidth/2;x<gWidth/2;x++){
             line = new Line(
                     x + gWidth/2,
-                    -f(x, s, 0) + gHeight/2,
+                    -f(x, s, 0, '+') + gHeight/2,
                     x+1 +gWidth/2,
-                    -f(x+1, s, 0)+ gHeight/2
+                    -f(x+1, s, 0, '+')+ gHeight/2
             );
             line.setStroke(Color.GREEN);
             line.setStrokeWidth(2);
             outputGraph.getChildren().add(line);
         }
     }
-    double f1(double x) { //function for tests
+    double f1(double x, String s, double f, char operation) { //function for tests
         short c = dS; //one division on ox, oy (division size)
-        return x * x / 41 + x * x * x / (41 * 41);
+        return x * x / 41 - x * x * x / (41 * 41);
     }
 
-    double f(double x, String s, double f){
+    double f(double x, String s, double f, char operation){
         int num;
+        double incr = 0;
         int c;
         char buff;
         char[]array;
-        while(true) {
-            if(s.contains("x^")){
-                while(s.contains("x^")){
-                    c = s.indexOf("^")+1;
-                    buff=s.charAt(c);
-                    num=Character.getNumericValue(buff);
-                    f+=Math.pow(x, num)/Math.pow(41, num-1);
-                    array=s.toCharArray();
-                    array[c]='$';
-                    array[c-1]='$';
-                    array[c-2]='$';
-                    s = new String(array);
-                    s.replaceAll("$", "");
-                    System.out.println(s);
-                }
-            }
-            if(s.contains("+")){
-                c=s.indexOf("+");
-                array=s.toCharArray();
-                array[c]='$';
+        do {
+            if (s.contains("+")) {
+                c = s.indexOf("+");
+                array = s.toCharArray();
+                array[c] = '$';
                 s = new String(array);
-
+                s.replaceAll("$", "");
+                f(x, s, f, '+');
+            }else if (s.contains("-")) {
+                c = s.indexOf("-");
+                array = s.toCharArray();
+                array[c] = '$';
+                s = new String(array);
+                s.replaceAll("$", "");
+                f(x, s, f, '-');
             }
-            if(arrCheck(s)) break;
-        }
+            if (s.contains("x^")) {
+                c = s.indexOf("^") + 1;
+                buff = s.charAt(c);
+                num = Character.getNumericValue(buff);
+                incr = Math.pow(x, num) / Math.pow(41, num - 1);
+                if (operation == '+') {
+                    f += incr;
+                    System.out.println("1");
+                } else if (operation == '-') {
+                    f -= incr;
+                    System.out.println("2");
+                }
+                array = s.toCharArray();
+                array[c] = '$';
+                array[c - 1] = '$';
+                array[c - 2] = '$';
+                s = new String(array);
+                s.replaceAll("$", "");
+            }
+        } while (!arrCheck(s));
         return f;
-    };
+    }
     boolean arrCheck(String s){
         char[]c=s.toCharArray();
         int l=s.length();
