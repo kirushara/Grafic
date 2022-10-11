@@ -4,6 +4,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
 <Pane minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.grafic.Controller">
    <children>
@@ -20,12 +21,17 @@
                   <Font name="Arial Bold" size="19.0" />
                </font>
             </Button>
-            <TextField fx:id="formulaInput" layoutX="116.0" layoutY="213.0" />
+            <TextField fx:id="formulaInput" layoutX="116.0" layoutY="213.0" styleClass="formulaInput" stylesheets="@myCss.css" />
             <Button fx:id="exitButton" layoutX="140.0" layoutY="470.0" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="100.0" text="Exit">
                <font>
                   <Font name="Arial Bold" size="19.0" />
                </font>
             </Button>
+            <Text fx:id="ef" fill="RED" layoutX="116.0" layoutY="252.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Empty field" visible="false" wrappingWidth="71.72659301757812">
+               <font>
+                  <Font size="11.0" />
+               </font>
+            </Text>
          </children>
       </Pane>
    </children>

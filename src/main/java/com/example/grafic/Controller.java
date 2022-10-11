@@ -11,10 +11,14 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 
-import javafx.scene.layout.Pane;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.effect.Effect;
+import javafx.scene.effect.Glow;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
+import javafx.scene.text.Text;
 
 public class Controller {
 
@@ -40,6 +44,9 @@ public class Controller {
     @FXML
     private TextField formulaInput;
 
+    @FXML
+    private Text ef;
+
     final short dS = 41; //division size
 
     @FXML
@@ -57,7 +64,7 @@ public class Controller {
         clearButton.setOnAction(actionEvent -> {
             outputGraph.getChildren().clear();
             bgFill();
-            System.out.print(formulaInput.getText().compareTo(""));
+            formulaInput.setText("");
         });
         exitButton.setOnAction(actionEvent -> {
             System.exit(0);
@@ -117,10 +124,16 @@ public class Controller {
 
     @FXML
     void drawFunction(){
+        String s = formulaInput.getText();
+        if(s.compareTo("")==0){
+            emptyField(false);
+            return;
+        }else {
+            emptyField(true);
+        }
         float gWidth = (float) outputGraph.getWidth();
         float gHeight = (float) outputGraph.getHeight();
         Line line;
-        String s = formulaInput.getText();
         for(float x=-gWidth/2;x<gWidth/2;x++){
             line = new Line(
                     x + gWidth/2,
@@ -133,11 +146,10 @@ public class Controller {
             outputGraph.getChildren().add(line);
         }
     }
-    double f1(double x){
-        short c=dS; //one division on ox, oy
-        return x*x/41+x*x*x/(41*41);
+    double f1(double x) { //function for tests
+        short c = dS; //one division on ox, oy (division size)
+        return x * x / 41 + x * x * x / (41 * 41);
     }
-
 
     double f(double x, String s, double f){
         int num;
@@ -167,7 +179,7 @@ public class Controller {
                 s = new String(array);
 
             }
-            if(arrCheck(s)||s.compareTo("")==0) break;
+            if(arrCheck(s)) break;
         }
         return f;
     };
@@ -178,85 +190,20 @@ public class Controller {
             if(c[i]!='$') return false;
         return true;
     }
+    void emptyField(boolean b){
+        if(!b) {
+            int depth = 20;
+            DropShadow borderGlow= new DropShadow();
+            borderGlow.setColor(Color.RED);
+            borderGlow.setWidth(depth);
+            borderGlow.setHeight(depth);
+            formulaInput.setEffect(borderGlow);
+            ef.setVisible(true);
+        }
+        else{
+            formulaInput.setEffect(null);
+            ef.setVisible(false);
+        }
+    }
 }
 
-
-/*
-interface Operation{
-        double execute(double... nums);
-    }
- */
-/*
- float gWidth = (float) outputGraph.getWidth();
-        float gHeight = (float) outputGraph.getHeight();
-        Operation operation = x -> x[0]*x[0]/3;
-
-        for(int i = 0; i < gWidth; i++) {
-            outputGraph.getChildren().add(
-                    new Line(
-                            i + gWidth/2,
-                            -operation.execute(i) + gHeight/2,
-                            i+1 +gWidth/2,
-                            -operation.execute(i+1)+ gHeight/2
-                    )
-            );
-        }
- */
-/*boolean check = true;
-        int sX = 0, sY=0, eX=0, eY=0;
-
-        if(isFieldEmpty(getStartX())){
-            ef1.setOpacity(1);
-            check=false;
-        }else{
-            sX=strToInt(getStartX());
-        }
-
-        if(isFieldEmpty(getStartY())){
-            ef2.setOpacity(1);
-            check=false;
-        }else{
-            sY=strToInt(getStartY());
-        }
-
-        if(isFieldEmpty(getEndX())){
-            ef3.setOpacity(1);
-            check=false;
-        }else{
-            eX=strToInt(getEndX());
-        }
-
-        if(isFieldEmpty(getEndY())){
-            ef4.setOpacity(1);
-            check=false;
-        }else{
-            eY=strToInt(getEndY());
-        }
-
-        if(check) {
-            Line line = new Line(sX, sY, eX, eY);
-            outputGraph.getChildren().add(line);
-        }*/
-/*
-    @FXML
-    String getStartX(){
-       return startX.getText();
-    }
-    @FXML
-    String getStartY(){
-        return startY.getText();
-    }
-    @FXML
-    String getEndX(){
-        return endX.getText();
-    }
-    @FXML
-    String getEndY(){
-        return endY.getText();
-    }
-    @FXML
-    boolean isFieldEmpty(String s){
-        if(s=="") return true;
-        else return false;
-    }
-    }*/
