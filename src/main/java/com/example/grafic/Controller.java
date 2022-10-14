@@ -18,6 +18,8 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Text;
 
+import static com.example.grafic.methodsInitializedMultipleTimes.emptyField;
+
 public class Controller {
 
 
@@ -47,14 +49,8 @@ public class Controller {
 
     final short dS = 41; //division size
 
-    @FXML
-        // This method is called by the FXMLLoader when initialization is complete
+    @FXML // This method is called by the FXMLLoader when initialization is complete
     void initialize() {
-        assert drawButton != null : "fx:id=\"drawButton\" was not injected: check your FXML file 'graph.fxml'.";
-        assert clearButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'graph.fxml'.";
-        assert exitButton != null : "fx:id=\"clearButton\" was not injected: check your FXML file 'graph.fxml'.";
-        assert outputGraph != null : "fx:id=\"outputGraph\" was not injected: check your FXML file 'graph.fxml'.";
-
         drawButton.setOnAction(actionEvent -> {
             outputGraph.getChildren().clear();
             bgFill();
@@ -123,12 +119,12 @@ public class Controller {
 
     @FXML
     void drawFunction(){
-        String s = formulaInput.getText();
-        if(s.compareTo("")==0){
-            emptyField(false);
+        String s = formulaInput.getText().trim();
+        if(s.equals("")){
+            emptyField(false, formulaInput, ef);
             return;
         }else {
-            emptyField(true);
+            emptyField(true, formulaInput, ef);
         }
         float gWidth = (float) outputGraph.getWidth();
         float gHeight = (float) outputGraph.getHeight();
@@ -172,24 +168,7 @@ public class Controller {
                 s = new String(array);
                 f(x, s, f);
             }
-            System.out.println(1);
         }
         return f;
     }
-    void emptyField(boolean b){
-        if(!b) {
-            int depth = 20;
-            DropShadow borderGlow= new DropShadow();
-            borderGlow.setColor(Color.RED);
-            borderGlow.setWidth(depth);
-            borderGlow.setHeight(depth);
-            formulaInput.setEffect(borderGlow);
-            ef.setVisible(true);
-        }
-        else{
-            formulaInput.setEffect(null);
-            ef.setVisible(false);
-        }
-    }
 }
-
