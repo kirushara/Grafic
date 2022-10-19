@@ -1,6 +1,8 @@
 package com.example.grafic;
 
+
 import java.sql.*;
+import java.util.Objects;
 
 public class DatabaseHandler extends Configs {
     Connection dbConnection;
@@ -22,20 +24,32 @@ public class DatabaseHandler extends Configs {
             prSt.setString(1, login);
             prSt.setString(2, password);
             prSt.executeUpdate();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        } catch (ClassNotFoundException e) {
+        } catch (SQLException | ClassNotFoundException e) {
             throw new RuntimeException(e);
         }
     }
-
-    boolean loginCheck(String login) {
-        String select = "SELECT EXISTS(SELECT " + Const.USERS_LOGIN + " FROM " + Const.USERS_TABLE + " WHERE "
-                + Const.USERS_LOGIN + " = '" + login + "')";
+    public ResultSet getUser(String login, String password) {
+        ResultSet rs;
+        String select = "SELECT * FROM " + Const.USERS_TABLE + " WHERE " +
+                Const.USERS_LOGIN + "=? AND " + Const.USERS_PASS + "=?";
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            prSt.setString(1, login);
+            prSt.setString(2, password);
+            rs=prSt.executeQuery();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return rs;
+    }
+    public boolean loginCheck(String login) {
+        String select = "SELECT * FROM " + Const.USERS_TABLE + " WHERE " +
+                Const.USERS_LOGIN + "=?";
         try (PreparedStatement prSt = getDbConnection().prepareStatement(select)) {
+            prSt.setString(1, login);
             ResultSet rs = prSt.executeQuery();
             while (rs.next())
-                if (rs.getInt(1) != 0)
+                if (!Objects.equals(rs.getString(Const.USERS_LOGIN), ""))
                     return true;
             return false;
         } catch (SQLException se) {
@@ -44,5 +58,47 @@ public class DatabaseHandler extends Configs {
             throw new RuntimeException(e);
         }
         return false;
+    }
+    public ResultSet getFormula(String login) {
+        ResultSet rs;
+        String select = "SELECT * FROM " + Const.FORMULAS_TABLE + " WHERE " +
+                Const.FORMULAS_LOGIN + "=?";
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(select);
+            prSt.setString(1, login);
+            rs=prSt.executeQuery();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return rs;
+    }
+    public void setFormula(String login, String formula){
+        String insert = "INSERT INTO " + Const.FORMULAS_TABLE + "(" +
+                Const.FORMULAS_LOGIN + "," + Const.FORMULAS_FORMULA + ")" +
+                "VALUES(?,?)";
+        try {
+            PreparedStatement prSt = getDbConnection().prepareStatement(insert);
+            prSt.setString(1, login);
+            prSt.setString(2, formula);
+            prSt.executeUpdate();
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public boolean formulaCheck(String login, String formula){
+        ResultSet rs;
+        String select = "SELECT * FROM " + Const.FORMULAS_TABLE + " WHERE " +
+                Const.FORMULAS_LOGIN + "=? AND " + Const.FORMULAS_FORMULA + "=?";
+        try( PreparedStatement prSt = getDbConnection().prepareStatement(select)){
+            prSt.setString(1, login);
+            prSt.setString(2, formula);
+            rs=prSt.executeQuery();
+            while (rs.next())
+                if (!Objects.equals(rs.getString(Const.FORMULAS_LOGIN), ""))
+                    return true;
+            return false;
+        } catch (SQLException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

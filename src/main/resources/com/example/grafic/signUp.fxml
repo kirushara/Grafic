@@ -9,14 +9,14 @@
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.grafic.SignUp">
    <children>
       <TextField fx:id="passField" layoutX="225.0" layoutY="228.0" />
-      <TextField fx:id="loginField" layoutX="225.0" layoutY="179.0" />
+      <TextField fx:id="loginField" layoutX="225.0" layoutY="179.0" text="log1" />
       <Text layoutX="225.0" layoutY="175.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Login:" />
       <Text layoutX="225.0" layoutY="224.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Password:" />
       <Button fx:id="logInButton" layoutX="225.0" layoutY="279.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="53.0" text="LogIn" />
       <Text layoutX="264.0" layoutY="118.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Authorization" />
       <Button fx:id="regButton" layoutX="295.0" layoutY="279.0" mnemonicParsing="false" text="Registration" />
       <Button fx:id="contButton" layoutX="225.0" layoutY="311.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="149.0" text="Continue with out login" />
-      <Text fx:id="ef" fill="RED" layoutX="224.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fill login and(or) password" visible="false" wrappingWidth="149.0">
+      <Text fx:id="ef" fill="RED" layoutX="225.0" layoutY="267.0" strokeType="OUTSIDE" strokeWidth="0.0" text="No such user exists" visible="false" wrappingWidth="149.0">
          <font>
             <Font size="11.0" />
          </font>

@@ -27,6 +27,9 @@ public class methodsInitializedMultipleTimes {
         stage.setScene(new Scene(root));
         stage.show();
     }
+    static void closeWindow(Button btn){
+        btn.getScene().getWindow().hide();
+    }
     static void emptyField(boolean b, TextField formulaInput, Text ef){
         if(!b) {
             int depth = 20;
